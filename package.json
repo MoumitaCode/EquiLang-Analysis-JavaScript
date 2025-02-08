@@ -1,0 +1,25 @@
+{
+  "name": "replicate_project",
+  "version": "1.0.0",
+  "main": "equi_lang.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MoumitaCode/EquiLang-Analysis-JavaScript.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MoumitaCode/EquiLang-Analysis-JavaScript/issues"
+  },
+  "homepage": "https://github.com/MoumitaCode/EquiLang-Analysis-JavaScript#readme",
+  "dependencies": {
+    "chart.js": "^4.4.7",
+    "danfojs": "^1.1.2",
+    "danfojs-node": "^1.1.2"
+  },
+  "description": ""
+}
