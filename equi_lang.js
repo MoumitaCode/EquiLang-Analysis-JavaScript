@@ -1,20 +1,23 @@
-// 1. Function to load the CSV file
+// Function to load the CSV file
 function loadCSV() {
-    fetch("data/ELLData.csv")  // Make sure this path matches the location of your CSV file
-        .then(response => response.text())  // Convert to text
+    fetch('ELLData.csv')  
+        .then(response => response.text())
         .then(csvText => {
             Papa.parse(csvText, {
-                header: true,  // Treat the first row as headers
+                header: true,
                 complete: function(results) {
                     const data = results.data;  
-                    showMenu(data);  // Show the menu after loading the CSV
+                    showMenu(data);  // Show menu options after CSV is loaded
                 }
             });
         })
-        .catch(error => alert('Error loading the CSV file.'));
+        .catch(error => {
+            alert('Error loading CSV file!');
+            console.error(error);
+        });
 }
 
-// 2. Function to show options for the user
+// Function to show options after CSV is loaded
 function showMenu(data) {
     const output = document.getElementById('output');
     output.innerHTML = `
@@ -25,16 +28,14 @@ function showMenu(data) {
     `;
 }
 
-// 3. Function to show the total ELL learners in 50 states
+// Function to show the total ELL learners in the 50 states
 function totalELL(data) {
-    // Find total ELL students in the 50 states row
     const totalELL = data.find(row => row.State === '50 states, District of Columbia, and Puerto Rico')['Total Students'];
     alert(`Total ELLs in 50 states: ${totalELL}`);
 }
 
-// 4. Function to show students with disabilities in Michigan
+// Function to show students with disabilities in Michigan
 function studentsWithDisabilities(data) {
-    // Find Michigan row and get disability data
     const michiganRow = data.find(row => row.State === 'Michigan');
     const totalDisabilities = michiganRow['Students With Disabilities Served Under IDEA  Number'];
     const disabilityPercent = michiganRow['Students With Disabilities Served Under IDEA  Percent'];
@@ -43,46 +44,39 @@ function studentsWithDisabilities(data) {
     alert(`Percentage of students with disabilities in Michigan: ${disabilityPercent}%`);
 }
 
-// 5. Function to show visualizations (charts)
+// Function to show visualizations (charts)
 function visualizations(data) {
     const output = document.getElementById('output');
     output.innerHTML = `
         <p>Choose a visualization:</p>
-        <button onclick="barChart(data)">Bar Chart</button>
-        <button onclick="pieChart(data)">Pie Chart</button>
+        <button onclick="barChart()">Bar Chart</button>
+        <button onclick="pieChart()">Pie Chart</button>
     `;
 }
 
-// 6. Function to create a bar chart
-function barChart(data) {
-    // Remove existing canvas if any
-    document.querySelectorAll('canvas').forEach(canvas => canvas.remove());
-
+// Function to create a bar chart
+function barChart() {
     const ctx = document.createElement('canvas');
     document.getElementById('output').appendChild(ctx);
 
-    // Example states and their ELL students (you can modify this with actual data)
     const states = ['California', 'Texas', 'Florida', 'New York'];
     const ellStudents = [1090375, 954145, 290057, 241791];
 
     new Chart(ctx, {
-        type: 'bar',  // Bar chart type
+        type: 'bar',  
         data: {
-            labels: states,  // X-axis labels
+            labels: states,  
             datasets: [{
                 label: 'ELL Students',
-                data: ellStudents,  // Data for Y-axis
-                backgroundColor: 'skyblue'  // Color for the bars
+                data: ellStudents,  
+                backgroundColor: 'skyblue'  
             }]
         }
     });
 }
 
-// 7. Function to create a pie chart
-function pieChart(data) {
-    // Remove existing canvas if any
-    document.querySelectorAll('canvas').forEach(canvas => canvas.remove());
-
+// Function to create a pie chart
+function pieChart() {
     const ctx = document.createElement('canvas');
     document.getElementById('output').appendChild(ctx);
 
@@ -90,12 +84,12 @@ function pieChart(data) {
     const percentages = [6.5, 76.5, 4.3, 10.6, 0.7];
 
     new Chart(ctx, {
-        type: 'pie',  // Pie chart type
+        type: 'pie',  
         data: {
-            labels: raceEthnicity,  // Labels for the pie sections
+            labels: raceEthnicity,  
             datasets: [{
-                data: percentages,  // Data for the pie chart
-                backgroundColor: ['red', 'blue', 'green', 'yellow', 'purple']  // Section colors
+                data: percentages,  
+                backgroundColor: ['red', 'blue', 'green', 'yellow', 'purple']  
             }]
         }
     });
