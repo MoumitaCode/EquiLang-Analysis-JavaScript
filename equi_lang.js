@@ -1,95 +1,65 @@
-// Function to load the CSV file
-function loadCSV() {
-    fetch('ELLData.csv')  
-        .then(response => response.text())
-        .then(csvText => {
-            Papa.parse(csvText, {
-                header: true,
-                complete: function(results) {
-                    const data = results.data;  
-                    showMenu(data);  // Show menu options after CSV is loaded
-                }
-            });
-        })
-        .catch(error => {
-            alert('Error loading CSV file!');
-            console.error(error);
-        });
+let barChartInstance = null;
+let pieChartInstance = null;
+
+// Function to display Total ELL Students in 50 States
+function totalELL() {
+    document.getElementById("output").innerHTML = "<p>Total ELLs in 50 states: 4,754,139</p>";
 }
 
-// Function to show options after CSV is loaded
-function showMenu(data) {
-    const output = document.getElementById('output');
-    output.innerHTML = `
-        <p>Choose an option:</p>
-        <button onclick="totalELL(data)">Total ELL Learners</button>
-        <button onclick="studentsWithDisabilities(data)">Students with Disabilities (Michigan)</button>
-        <button onclick="visualizations(data)">Show Visualizations</button>
-    `;
+// Function to display Students with Disabilities in Michigan
+function studentsWithDisabilities() {
+    document.getElementById("output").innerHTML = "<p>Total students with disabilities in Michigan: 660,357</p><p>Percentage: 13.9%</p>";
 }
 
-// Function to show the total ELL learners in the 50 states
-function totalELL(data) {
-    const totalELL = data.find(row => row.State === '50 states, District of Columbia, and Puerto Rico')['Total Students'];
-    alert(`Total ELLs in 50 states: ${totalELL}`);
-}
+// Function to show Bar Chart
+function showBarChart() {
+    document.getElementById("barChart").style.display = "block";
 
-// Function to show students with disabilities in Michigan
-function studentsWithDisabilities(data) {
-    const michiganRow = data.find(row => row.State === 'Michigan');
-    const totalDisabilities = michiganRow['Students With Disabilities Served Under IDEA  Number'];
-    const disabilityPercent = michiganRow['Students With Disabilities Served Under IDEA  Percent'];
-    
-    alert(`Total students with disabilities in Michigan: ${totalDisabilities}`);
-    alert(`Percentage of students with disabilities in Michigan: ${disabilityPercent}%`);
-}
+    const ctx = document.getElementById("barChart").getContext("2d");
 
-// Function to show visualizations (charts)
-function visualizations(data) {
-    const output = document.getElementById('output');
-    output.innerHTML = `
-        <p>Choose a visualization:</p>
-        <button onclick="barChart()">Bar Chart</button>
-        <button onclick="pieChart()">Pie Chart</button>
-    `;
-}
+    // Destroy previous instance if it exists
+    if (barChartInstance) {
+        barChartInstance.destroy();
+    }
 
-// Function to create a bar chart
-function barChart() {
-    const ctx = document.createElement('canvas');
-    document.getElementById('output').appendChild(ctx);
-
-    const states = ['California', 'Texas', 'Florida', 'New York'];
-    const ellStudents = [1090375, 954145, 290057, 241791];
-
-    new Chart(ctx, {
-        type: 'bar',  
+    barChartInstance = new Chart(ctx, {
+        type: "bar",
         data: {
-            labels: states,  
-            datasets: [{
-                label: 'ELL Students',
-                data: ellStudents,  
-                backgroundColor: 'skyblue'  
-            }]
+            labels: ["California", "Texas", "Florida", "New York"],
+            datasets: [
+                {
+                    label: "ELL Students",
+                    data: [1090375, 954145, 290057, 241791],
+                    backgroundColor: "skyblue",
+                },
+                {
+                    label: "Number of Schools",
+                    data: [10121, 8758, 3976, 4873],
+                    backgroundColor: "green",
+                }
+            ]
         }
     });
 }
 
-// Function to create a pie chart
-function pieChart() {
-    const ctx = document.createElement('canvas');
-    document.getElementById('output').appendChild(ctx);
+// Function to show Pie Chart
+function showPieChart() {
+    document.getElementById("pieChart").style.display = "block";
 
-    const raceEthnicity = ['White', 'Hispanic/Latino', 'Black', 'Asian', 'Two or more races'];
-    const percentages = [6.5, 76.5, 4.3, 10.6, 0.7];
+    const ctx = document.getElementById("pieChart").getContext("2d");
 
-    new Chart(ctx, {
-        type: 'pie',  
+    // Destroy previous instance if it exists
+    if (pieChartInstance) {
+        pieChartInstance.destroy();
+    }
+
+    pieChartInstance = new Chart(ctx, {
+        type: "pie",
         data: {
-            labels: raceEthnicity,  
+            labels: ["White", "Hispanic/Latino", "Black", "Asian", "Two or more races"],
             datasets: [{
-                data: percentages,  
-                backgroundColor: ['red', 'blue', 'green', 'yellow', 'purple']  
+                data: [6.5, 76.5, 4.3, 10.6, 0.7],
+                backgroundColor: ["blue", "red", "yellow", "purple", "orange"]
             }]
         }
     });

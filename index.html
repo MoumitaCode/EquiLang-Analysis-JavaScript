@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EquiLang Analysis Tool</title>
+    <title>EquiLang Analysis</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script> 
+    <script defer src="equi_lang.js"></script>
 </head>
 <body>
     <h1>EquiLang Analysis Tool</h1>
-
-    <button onclick="loadCSV()">Load CSV</button> 
-    <div id="output"></div> 
-
-    <script src="equi_lang.js"></script>
+    <button onclick="totalELL()">Total ELL Students in 50 States</button>
+    <button onclick="studentsWithDisabilities()">Students with Disabilities in Michigan</button>
+    <button onclick="showBarChart()">Show Bar Chart</button>
+    <button onclick="showPieChart()">Show Pie Chart</button>
+    <div id="output"></div>
+    
+    <canvas id="barChart" style="display: none; width: 400px; height: 400px;"></canvas>
+    <canvas id="pieChart" style="display: none; width: 400px; height: 400px;"></canvas>
 </body>
 </html>
